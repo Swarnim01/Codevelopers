@@ -7,7 +7,6 @@ import Createpost from './components/createpost';
 import LoginSignUp from './components/Signinup';
 import Homepost from './components/home'
 import { reducer , initialState} from './reducers/userReducer';
-import { ToastProvider} from 'react-toast-notifications';
 import UserProfile from './components/UserProfile';
 import { Toaster } from 'react-hot-toast';
 export const UserContext = createContext();
@@ -54,7 +53,6 @@ const  App = () => {
     <div className='body'>
       <UserContext.Provider value={{ state, dispatch }}>
         <BrowserRouter>
-          <ToastProvider>
             <Toaster
               position='top-center'
               reverseOrder={false}
@@ -81,7 +79,6 @@ const  App = () => {
             />
             {isSignin ? <Navbar setisSignin={setisSignin} /> : null}
             <Routing setisSignin={setisSignin} />
-          </ToastProvider>
         </BrowserRouter>
       </UserContext.Provider>
     </div>
