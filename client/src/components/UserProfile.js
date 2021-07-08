@@ -156,7 +156,16 @@ const UserProfile = () => {
           </div>
         </div>
       ) : (
-        <h2>Loading...</h2>
+        <h2
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignContent: 'center',
+          }}
+        >
+          Loading...
+        </h2>
       )}
     </>
   );

@@ -9,6 +9,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faGrin } from '@fortawesome/free-regular-svg-icons';
 import { UserContext } from '../App';
 import { Link } from 'react-router-dom';
+import { ToastProvider, useToasts } from 'react-toast-notifications';
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: '600px',
@@ -106,7 +107,7 @@ const Homepost = () => {
                 return data;
               } else return item;
             });
-            setcomment(null)
+            setcomment('')
             sethomepost(newhomepost);
           });
       };
@@ -234,6 +235,7 @@ const Homepost = () => {
               <input
                 type='text'
                 placeholder='Add a comment....'
+                value={comment}
                 style={{
                   background: 'none',
                   outline: 'none',

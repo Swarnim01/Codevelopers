@@ -6,14 +6,13 @@ import mobile_user from '../image/mobile_user.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter,faFacebook,faGoogle,faLinkedin} from '@fortawesome/free-brands-svg-icons';
 import { faUser,faLock,faEnvelope} from '@fortawesome/free-solid-svg-icons';
-import { ToastProvider, useToasts } from 'react-toast-notifications'
+import toast from 'react-hot-toast';
 import '../css/Signinup.css';
 import {UserContext} from '../App';
 
 const Signinup = ({props}) =>{
     const {state , dispatch} = useContext(UserContext);
     let history = useHistory();
-    const { addToast } = useToasts();
     const[isOpen,setIsOpen] = useState(false);
     const [username , setusername] = useState('');
     const [email , setemail] = useState('');
@@ -38,9 +37,9 @@ const Signinup = ({props}) =>{
         .then((response) => response.json())
         .then(({error , message}) => {
           if(error)
-          addToast(error, { appearance: 'error' });
+          toast.error(error);
           else if(message)
-          addToast(message, { appearance: 'success' });
+          toast.success(message);
         })
     };
         const OnSubmitSignin = (event) => {
@@ -57,11 +56,11 @@ const Signinup = ({props}) =>{
             .then((response) => response.json())
             .then((data) => {
               console.log(data);
-              if (data.error) addToast(data.error, { appearance: 'error' });
+              if (data.error) toast.error(data.error);
               else
               { props.toggleSign(true); 
                 history.push('/home');
-                addToast('Successfully Signed In', { appearance: 'success' });
+                toast.success('Successfully Signed In');
                 dispatch({type:'USER',payload:data.savedperson})
               }
             });
@@ -71,22 +70,18 @@ const Signinup = ({props}) =>{
           if(e ==='Username')
           {
             if(!(/^[a-z\d]{5,12}$/i.test(username)))
-             {addToast('Username must be 5 to 12 character long', { appearance:'warning' });
+             {toast.error('Username must be 5 to 12 character long');
             }
 
           }
           else if(e === 'Email')
           {
-            if(!(/^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/.test(email)))
-            addToast('Invalid Email', {
-              appearance: 'warning',
-            });
+            if(!(/^([a-z\d.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/.test(email)))
+            toast.error('Invalid Email');
           }
           else if(e === 'Password')
           if(!(/^[#\w@_-]{8,20}$/.test(password)))
-          addToast('Password should be 8 to 20 characters long with @ # - _ special characters', {
-            appearance: 'warning',
-          });
+          toast.error('Password should be 8 to 20 characters long with @ # - _ special characters');
 
         }
     return (
@@ -261,7 +256,7 @@ const Signinup = ({props}) =>{
         <div className='panels-container'>
           <div className='panel left-panel'>
             <div className='content'>
-              <h2>Looking for new Friends</h2>
+              <h2>Looking for fellow Coders and Developers</h2>
               <p>
                 We give you access to million of people to connect with you.Be a
                 part of our commnity and enjoy.
@@ -279,7 +274,7 @@ const Signinup = ({props}) =>{
           </div>
           <div className='panel right-panel'>
             <div className='content'>
-              <h2>Looking for new Friends</h2>
+              <h2>Looking for fellow Coders and Developers</h2>
               <p>
                 We give you access to million of people to connect with you.Be a
                 part of our commnity and enjoy.
@@ -302,8 +297,7 @@ const Signinup = ({props}) =>{
 }
 
 const LoginSignUp = (props) =>{
-    return(<ToastProvider autoDismiss='true' autoDismissTimeout={3000}>
-        <Signinup props ={props} />
-    </ToastProvider>)
+    return(
+        <Signinup props ={props} />)
 }
 export default LoginSignUp;

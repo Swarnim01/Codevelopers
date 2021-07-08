@@ -3,3 +3,7 @@
   color: white;
   margin-bottom: 5rem;
 }
+
+.searchresult::-webkit-scrollbar {
+  display: none;
+}

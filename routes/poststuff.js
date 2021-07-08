@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Posts = require('../models/posts');
 const protected = require('../middleware/protected');
-
+const Users = require('../models/user');
 const PostStuffRouter = express.Router();
 
 PostStuffRouter.put('/like',protected, (req, res) => {
@@ -61,6 +61,17 @@ PostStuffRouter.delete('/delete/:commentId',protected,(req,res)=>{
     )
       .populate('postedBy', '_id username')
       .populate('comments.postedBy', '_id username')
+      .exec((err, result) => {
+        if (err) return res.status(422).json({ error: err });
+        else res.json(result);
+      });
+})
+PostStuffRouter.post('/search-user',protected,(req,res)=>{
+  const { query } = req.body;
+  let re = new RegExp(query);
+    Users.find({ username : { $regex:re , $options : 'i'} })
+      .populate('postedBy', '_id username')
+      .select('username')
       .exec((err, result) => {
         if (err) return res.status(422).json({ error: err });
         else res.json(result);

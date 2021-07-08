@@ -1,26 +1,21 @@
-import React,{useContext} from 'react';
+import React,{useContext , useState} from 'react';
 import '../css/Navbar.css';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
+import {AppBar , Toolbar , IconButton , Typography , InputBase , Badge , MenuItem , Menu , List , ListItemText , ListItem , ListItemAvatar , Avatar , Divider} from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import {Link, useHistory} from 'react-router-dom';
 import { UserContext } from '../App';
-
+import toast from 'react-hot-toast';
+import swarnim from '../image/swarnim.jpeg';
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
-    marginBottom:'4rem'
+    marginBottom: '4rem',
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -50,10 +45,11 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 2),
     height: '100%',
     position: 'absolute',
-    pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    cursor:'pointer',
+    zIndex:'5'
   },
   inputRoot: {
     color: 'inherit',
@@ -80,14 +76,29 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  list: {
+    width: '100%',
+    maxWidth: '36ch',
+    backgroundColor: theme.palette.background.paper,
+    height:'10rem'
+  },
+  inline: {
+    display: 'inline',
+  },
+  searchresult:{
+    position:'absolute',
+    zIndex:'10',
+  }
 }));
 
 export default function PrimarySearchAppBar({setisSignin}) {
   const classes = useStyles();
   const { state, dispatch } = useContext(UserContext);
   let history = useHistory();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [ searchusers ,setsearchusers] = useState(null);
+  const [ searchterm , setsearchterm] = useState('')
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -120,10 +131,40 @@ export default function PrimarySearchAppBar({setisSignin}) {
         console.log(data);
         setisSignin(false);
         history.push('/');
+        toast.success('Successfully logged Out')
         dispatch({ type: 'CLEAR'});
       });
   }
 
+    const clearInput = () => {
+      setsearchusers(null);
+      setsearchterm('');
+      console.log('close')
+    };
+
+  const fetchuser = (e) => {
+    let query = e.target.value;
+    setsearchterm(query);
+    fetch('/search-user', {
+      method: 'post',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result)
+        if(query === '')
+        setsearchusers(null);
+        else if(result.length === 0)
+        setsearchusers([]);
+        else
+        setsearchusers(result);
+
+      });
+  }
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -201,20 +242,83 @@ export default function PrimarySearchAppBar({setisSignin}) {
       <AppBar>
         <Toolbar style={{ backgroundColor: '#101010' }}>
           <Typography className={classes.title} variant='h6' noWrap>
-            <Link to = '/home' style={{cursor:'pointer' , textDecoration:'none' , color:'white'}}>Codevlopers</Link>
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder='Search…'
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
+            <Link
+              to='/home'
+              style={{
+                cursor: 'pointer',
+                textDecoration: 'none',
+                color: 'white',
               }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
+            >
+              Codevelopers
+            </Link>
+          </Typography>
+          <div>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                {searchusers ? (
+                  <CloseIcon
+                    id='clearBtn'
+                    onClick={clearInput}
+                    style={{ cursor: 'pointer' }}
+                  />
+                ) : (
+                  <SearchIcon />
+                )}
+              </div>
+              <InputBase
+                placeholder='Search…'
+                value={searchterm}
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={(e) => fetchuser(e)}
+              />
+            </div>
+            <div
+              className={classes.searchresult}
+              style={{
+                overflow: 'hidden',
+                overflowY: 'auto',
+                minWidth: '20rem',
+                marginTop: '0.2rem',
+              }}
+            >
+              {searchusers ? (
+                searchusers.length === 0 ? (
+                  <p style = {{ background:'white', color:'black'}}>Oops ! No user found</p>
+                ) : (
+                  <List className={classes.list}>
+                    {searchusers.map((item) => {
+                      return (
+                        <div>
+                          <ListItem alignItems='flex-start'>
+                            <ListItemAvatar>
+                              <Avatar alt={item.username} src={swarnim} />
+                            </ListItemAvatar>
+                            <Link
+                              style={{ textDecoration: 'none', color: 'black' }}
+                              to={
+                                item._id !== state._id
+                                  ? `/profile/${item._id}`
+                                  : '/profile'
+                              }
+                            >
+                              <Typography color='textPrimary'>
+                                {item.username}
+                              </Typography>
+                            </Link>
+                          </ListItem>
+                          <Divider variant='inset' component='li' />
+                        </div>
+                      );
+                    })}
+                  </List>
+                )
+              ) : null}
+            </div>
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

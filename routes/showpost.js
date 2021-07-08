@@ -11,9 +11,10 @@ ShowPostRouter.use(bodyParser.json());
 ShowPostRouter.route('/')
 .get(protected,(req,res) => {
   console.log(req.user);
-    Posts.find({postedBy:{$in : req.user.following}})
+    Posts.find({$or :[{postedBy:{$in : req.user.following}},{postedBy:req.user._id}]})
       .populate('postedBy', '_id username')
       .populate('comments.postedBy', '_id username')
+      .sort('-createdAt')
       .then((posts) => {
         res.json(posts);
       })

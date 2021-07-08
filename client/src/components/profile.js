@@ -48,10 +48,14 @@ const Profile = () =>{
                     objectFit: 'cover',
                   }}
                 />
-                <span style={{ cursor: 'pointer' ,position:'absolute' , top:'5rem'}}>
-                  <FontAwesomeIcon
-                    icon={faUserEdit}
-                  />
+                <span
+                  style={{
+                    cursor: 'pointer',
+                    position: 'absolute',
+                    top: '5rem',
+                  }}
+                >
+                  <FontAwesomeIcon icon={faUserEdit} />
                 </span>
               </div>
               <div
@@ -93,7 +97,16 @@ const Profile = () =>{
             </div>
           </div>
         ) : (
-          <h2>Loading...</h2>
+          <h2
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignContent:'center'
+            }}
+          >
+            Loading...
+          </h2>
         )}
       </>
     );

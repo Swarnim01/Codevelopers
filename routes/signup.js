@@ -3,8 +3,16 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Users = require('../models/user')
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
+const nodemailerSendgrid = require('nodemailer-sendgrid');
+const { SENDGRID_API_KEY } = require('../config/key');
 
 const SignUpRouter = express.Router();
+const transport = nodemailer.createTransport(
+  nodemailerSendgrid({
+    apiKey:SENDGRID_API_KEY,
+  })
+);
 
 SignUpRouter.route('/')
 .post((req,res)=>{
@@ -22,7 +30,13 @@ SignUpRouter.route('/')
             password:hasedpass
         });
         user.save()
-        .then(()=>{
+        .then((user)=>{
+            transport.sendMail({
+              from: 'codevsharma127@gmail.com',
+              to: user.email,
+              subject: 'Successfully Signed Up',
+              html: '<h1>Welcome to Codevelopers Community</h1>',
+            });
             res.status(200).json({message:'Saved Successfully , Now Login to Continue'});
         })
         .catch((err)=>{

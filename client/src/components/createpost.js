@@ -4,25 +4,25 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import toast from 'react-hot-toast';
 import {storage} from '../firebase';
 import firebase from '../firebase';
-import { ToastProvider, useToasts } from 'react-toast-notifications';
 import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles({
   root: {
-    maxWidth:'600px',
-    margin:'2rem auto',
+    maxWidth: '600px',
+    margin: '0px auto',
+    marginTop: '6rem',
   },
 });
 
 const Createpost = () => {
   const classes = useStyles();
-  const { addToast } = useToasts();
   const [image , setimage] = useState(null);
   const [caption,setcaption] = useState('');
   const [imageuri,setimageuri] = useState('');
-  const [showimage , setshowimage] = useState(undefined);
+  const [showimage , setshowimage] = useState(null);
   let history = useHistory();
   useEffect(()=>{
     if(imageuri)
@@ -37,8 +37,8 @@ const Createpost = () => {
     })
       .then((response) => response.json())
       .then(({ error }) => {
-        if (error) addToast(error, { appearance: 'error' });
-        else{ addToast('Posted Successfully', { appearance: 'success' });
+        if (error) toast.error(error);
+        else{ toast.success('Posted Successfully');
         history.push('/home')}
       });
   }
@@ -116,7 +116,7 @@ const Createpost = () => {
           }}
           onChange={(e)=>{setcaption(e.target.value)}}
         />
-        <img src={showimage} alt='preview' height='200rem ' width='300rem' />
+        {showimage ? <img src={showimage} alt='preview' height='200rem ' width='300rem' /> : null}
         <div>
           <input type='file' onChange={(e)=> {handleimageuri(e)} }/>
         </div>
@@ -127,11 +127,4 @@ const Createpost = () => {
     </Card>
   );
 }
-const createpost = () => {
-  return (
-    <ToastProvider autoDismiss='true' autoDismissTimeout={3000}>
-      <Createpost />
-    </ToastProvider>
-  );
-};
-export default createpost;
+export default Createpost;

@@ -2,13 +2,14 @@ import React, { useState , useEffect , createContext , useReducer, useContext } 
 import Navbar from './components/Navbar';
 import './App.css';
 import Profile from './components/profile';
-import Homepost from './components/home';
 import { BrowserRouter , Route, Switch, useHistory } from 'react-router-dom';
 import Createpost from './components/createpost';
 import LoginSignUp from './components/Signinup';
+import Homepost from './components/home'
 import { reducer , initialState} from './reducers/userReducer';
 import { ToastProvider} from 'react-toast-notifications';
 import UserProfile from './components/UserProfile';
+import { Toaster } from 'react-hot-toast';
 export const UserContext = createContext();
 
 
@@ -54,6 +55,30 @@ const  App = () => {
       <UserContext.Provider value={{ state, dispatch }}>
         <BrowserRouter>
           <ToastProvider>
+            <Toaster
+              position='top-center'
+              reverseOrder={false}
+              gutter={8}
+              containerClassName=''
+              containerStyle={{}}
+              toastOptions={{
+                // Define default options
+                className: '',
+                duration: 5000,
+                style: {
+                  background: '#363636',
+                  color: '#fff',
+                },
+                // Default options for specific types
+                success: {
+                  duration: 3000,
+                  theme: {
+                    primary: 'green',
+                    secondary: 'black',
+                  },
+                },
+              }}
+            />
             {isSignin ? <Navbar setisSignin={setisSignin} /> : null}
             <Routing setisSignin={setisSignin} />
           </ToastProvider>
