@@ -16,7 +16,7 @@ const Routing = ({setisSignin}) => {
     const history = useHistory();
         const { state, dispatch } = useContext(UserContext);
     useEffect(() => {
-      fetch('http://localhost:5000/protected', {
+      fetch('/protected', {
         method: 'get',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
