@@ -42,6 +42,10 @@ app.use(
     credentials: true,
   })
 );
+
+if(process.env.NODE_ENV === 'production'){
+  app.use(express.static('client/build'));
+}
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -59,10 +63,6 @@ app.use('/createpost',PostRouter);
 app.use('/showpost',ShowPostRouter);
 app.use('/myprofile',MyProfileRouter);
 app.use('/protected',ProtectedRouter);
-
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
