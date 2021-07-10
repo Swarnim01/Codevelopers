@@ -218,8 +218,7 @@ form.sign-up-form {
 
 @media (max-width: 870px) {
   .signinup {
-    min-height: 800px;
-    height: 100vh;
+    min-height: 100vh;
   }
 
   .signinup:before {
@@ -236,7 +235,7 @@ form.sign-up-form {
   .signin-signup {
     width: 100%;
     left: 50%;
-    top: 95%;
+    top: 102%;
     transform: translate(-50%, -100%);
     transition: 1s 0.8s ease-in-out;
     z-index: 5;
@@ -249,7 +248,7 @@ form.sign-up-form {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    padding: 2.5rem 8%;
+    padding: 0.5rem 4%;
     z-index: 7;
   }
   .panel .content {
@@ -261,7 +260,8 @@ form.sign-up-form {
   }
   .panel p {
     font-size: 0.7rem;
-    padding: 0.5rem 0;
+    padding: 0.2rem 0;
+    margin: 0.4rem 0;
   }
   .btn.transparent {
     width: 110px;
@@ -297,7 +297,7 @@ form.sign-up-form {
     transform: translateX(0px);
   }
   .signinup.sign-up-mode .signin-signup {
-    top: 5%;
+    top: 3%;
     transform: translate(-50%, 0);
     left: 50%;
   }

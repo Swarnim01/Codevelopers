@@ -4,9 +4,11 @@ import classNames from 'classnames';
 import online_friends from '../image/online_friends.svg';
 import mobile_user from '../image/mobile_user.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTwitter,faFacebook,faGoogle,faLinkedin} from '@fortawesome/free-brands-svg-icons';
+import { faTwitter,faFacebook,faGoogle,faGithub} from '@fortawesome/free-brands-svg-icons';
 import { faUser,faLock,faEnvelope} from '@fortawesome/free-solid-svg-icons';
 import toast from 'react-hot-toast';
+import {FacebookProvider , GoogleProvider , GithubProvider, TwitterProvider} from '../service/authmethod';
+import SocialAuth from '../service/auth'
 import '../css/Signinup.css';
 import {UserContext} from '../App';
 
@@ -84,6 +86,10 @@ const Signinup = ({props}) =>{
           toast.error('Password should be 8 to 20 characters long with @ # - _ special characters');
 
         }
+        const AuthHandler = async (provider) =>{
+          const res = await SocialAuth(provider);
+          console.log(res);
+        }
     return (
       <div className={classNames('signinup', { 'sign-up-mode': isOpen })}>
         <div className='forms-container'>
@@ -141,22 +147,34 @@ const Signinup = ({props}) =>{
                 className='btn solid'
                 onClick={(event) => OnSubmitSignin(event)}
               />
-              <p className='social-text' style={{ marginTop: '2.5rem' }}>
+              <p className='social-text' style={{ marginTop: '0.3rem' }}>
                 Or Sign in with social platforms
               </p>
               <div className='social-media'>
-                <a href='#' className='social-icon'>
-                  <FontAwesomeIcon icon={faGoogle} />
-                </a>
-                <a href='#' className='social-icon'>
-                  <FontAwesomeIcon icon={faTwitter} />
-                </a>
-                <a href='#' className='social-icon'>
-                  <FontAwesomeIcon icon={faFacebook} />
-                </a>
-                <a href='#' className='social-icon'>
-                  <FontAwesomeIcon icon={faLinkedin} />
-                </a>
+                <p className='social-icon' style={{ cursor: 'pointer' }}>
+                  <FontAwesomeIcon
+                    icon={faGoogle}
+                    onClick={() => AuthHandler(GoogleProvider)}
+                  />
+                </p>
+                <p className='social-icon' style={{ cursor: 'pointer' }}>
+                  <FontAwesomeIcon
+                    icon={faTwitter}
+                    onClick={() => AuthHandler(TwitterProvider)}
+                  />
+                </p>
+                <p className='social-icon' style={{ cursor: 'pointer' }}>
+                  <FontAwesomeIcon
+                    icon={faFacebook}
+                    onClick={() => AuthHandler(FacebookProvider)}
+                  />
+                </p>
+                <p className='social-icon' style={{ cursor: 'pointer' }}>
+                  <FontAwesomeIcon
+                    icon={faGithub}
+                    onClick={() => AuthHandler(GithubProvider)}
+                  />
+                </p>
               </div>
             </form>
 
@@ -233,22 +251,34 @@ const Signinup = ({props}) =>{
                 className='btn solid'
                 onClick={(event) => OnSubmitSignup(event)}
               />
-              <p className='social-text' style={{ marginTop: '2.5rem' }}>
+              <p className='social-text' style={{ marginTop: '0.3rem' }}>
                 Or Sign Up with social platforms
               </p>
               <div className='social-media'>
-                <a href='#' className='social-icon'>
-                  <FontAwesomeIcon icon={faGoogle} />
-                </a>
-                <a href='#' className='social-icon'>
-                  <FontAwesomeIcon icon={faTwitter} />
-                </a>
-                <a href='#' className='social-icon'>
-                  <FontAwesomeIcon icon={faFacebook} />
-                </a>
-                <a href='#' className='social-icon'>
-                  <FontAwesomeIcon icon={faLinkedin} />
-                </a>
+                <p className='social-icon' style={{ cursor: 'pointer' }}>
+                  <FontAwesomeIcon
+                    icon={faGoogle}
+                    onClick={() => AuthHandler(GoogleProvider)}
+                  />
+                </p>
+                <p className='social-icon' style={{ cursor: 'pointer' }}>
+                  <FontAwesomeIcon
+                    icon={faTwitter}
+                    onClick={() => AuthHandler(TwitterProvider)}
+                  />
+                </p>
+                <p className='social-icon' style={{ cursor: 'pointer' }}>
+                  <FontAwesomeIcon
+                    icon={faFacebook}
+                    onClick={() => AuthHandler(FacebookProvider)}
+                  />
+                </p>
+                <p className='social-icon' style={{ cursor: 'pointer' }}>
+                  <FontAwesomeIcon
+                    icon={faGithub}
+                    onClick={() => AuthHandler(GithubProvider)}
+                  />
+                </p>
               </div>
             </form>
           </div>
@@ -264,7 +294,7 @@ const Signinup = ({props}) =>{
               <button
                 className='btn transparent'
                 id='sign-up-btn'
-                style={{ marginTop: '1.5rem' }}
+                style={{ marginTop: '0.2rem' }}
                 onClick={OnClick}
               >
                 Sign Up
@@ -282,7 +312,7 @@ const Signinup = ({props}) =>{
               <button
                 className='btn transparent'
                 id='sign-in-btn'
-                style={{ marginTop: '1.5rem' }}
+                style={{ marginTop: '0.2rem' }}
                 onClick={OnClick}
               >
                 Sign In
