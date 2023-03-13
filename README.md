@@ -5,9 +5,9 @@ A social web app where coders and developers interact and grow together
 1. **Login/SignUp Page** : 
 
 
-![Login Screen](https://user-images.githubusercontent.com/56025388/224774962-cf54a343-48c7-408a-8a4f-2f7b72de3a60.png 'Login Screen')
+    ![Login Screen](https://user-images.githubusercontent.com/56025388/224774962-cf54a343-48c7-408a-8a4f-2f7b72de3a60.png 'Login Screen')
 
-![SignUp Screen](https://user-images.githubusercontent.com/56025388/224774992-d3a4270f-60b9-4400-94fd-b200fb2032fd.png 'SignUp Screen')
+    ![SignUp Screen](https://user-images.githubusercontent.com/56025388/224774992-d3a4270f-60b9-4400-94fd-b200fb2032fd.png 'SignUp Screen')
 
 2. **Home Page** : 
 
@@ -19,11 +19,11 @@ A social web app where coders and developers interact and grow together
 3. **Post Status Page** :
 
 
-User can select the image and can post it from this page.
+    User can select the image and can post it from this page.
 
 4. **Realtime Chat Page** :
 
-Users can chat with each other.
+    Users can chat with each other.
 
 ## Tech Stack / Technologies Used
 
