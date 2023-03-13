@@ -21,8 +21,8 @@ const LogoutRouter = require('./routes/logout');
 const PostStuffRouter = require('./routes/poststuff');
 const UserProfileRouter = require('./routes/userprofile');
 const MyProfileRouter = require('./routes/myprofile');
-
-
+const ConversationRouter = require('./routes/conversations')
+const MessageRouter = require('./routes/messages')
 const connect = mongoose.connect(MONGOURI,{ useNewUrlParser: true,useUnifiedTopology: true });
 connect.then(()=>{
   console.log('connected to database');
@@ -43,8 +43,11 @@ app.use(
   })
 );
 
-if(process.env.NODE_ENV === 'production'){
-  app.use(express.static('client/build'));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("/*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
 }
 app.use(logger('dev'));
 app.use(express.json());
@@ -55,6 +58,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use(PostStuffRouter);
 app.use(UserProfileRouter)
+app.use('/conversation',ConversationRouter);
+app.use('/message',MessageRouter);
 app.use('/users', usersRouter);
 app.use('/signup',SignUpRouter);
 app.use('/signin',SignInRouter);

@@ -11,6 +11,7 @@ import {FacebookProvider , GoogleProvider , GithubProvider, TwitterProvider} fro
 import SocialAuth from '../service/auth'
 import '../css/Signinup.css';
 import {UserContext} from '../App';
+import socket from '../www/socket';
 
 const Signinup = ({props}) =>{
     const {state , dispatch} = useContext(UserContext);
@@ -19,7 +20,6 @@ const Signinup = ({props}) =>{
     const [username , setusername] = useState('');
     const [email , setemail] = useState('');
     const [password , setpassword] = useState('');
-
     const OnClick = () =>{
         setIsOpen(!isOpen)
     }
@@ -61,8 +61,11 @@ const Signinup = ({props}) =>{
               if (data.error) toast.error(data.error);
               else
               { props.toggleSign(true); 
-                history.push('/home');
                 toast.success('Successfully Signed In');
+                history.push('/home');
+                socket.auth = {username : data.savedperson.username};
+                console.log('triggered');
+                socket.connect();
                 dispatch({type:'USER',payload:data.savedperson})
               }
             });

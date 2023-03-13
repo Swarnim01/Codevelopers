@@ -1,4 +1,4 @@
-import React,{useState,useEffect, useContext} from 'react';
+import React,{useState,useEffect, useContext, useCallback} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Card , CardHeader , CardMedia , CardContent , CardActions , Avatar ,IconButton , Typography} from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
@@ -9,6 +9,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faGrin } from '@fortawesome/free-regular-svg-icons';
 import { UserContext } from '../App';
 import { Link } from 'react-router-dom';
+import socket from '../www/socket';
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: '600px',
@@ -27,6 +28,32 @@ const useStyles = makeStyles((theme) => ({
 const Homepost = () => {
   const classes = useStyles();
   const {state , dispatch } = useContext(UserContext);
+  // const loggedInUser = useContext(LoggedInUserContext);
+
+  const checkIfUserExists = useCallback(() => {
+    const sessionID = localStorage.getItem("sessionID");
+    if(sessionID){
+    socket.auth = { sessionID };
+    socket.connect();
+  }
+  },[])
+  useEffect(() => {
+    checkIfUserExists();
+    socket.on("session", ({ sessionID, userID, username }) => {
+      // attach the session ID to the next reconnection attempts
+      socket.auth = { sessionID };
+      // store it in the localStorage
+      localStorage.setItem("sessionID", sessionID);
+      // save the ID of the user
+      socket.userID = userID;
+      // loggedInUser.ToggleUser(userID);
+      localStorage.setItem("userID", userID);
+    });
+    // socket.on('connect', () => {
+    //   console.log(socket.id);
+    // })
+  },[checkIfUserExists])
+
   useEffect(()=>{
     fetch('/showpost', {
       method: 'get',
@@ -37,8 +64,7 @@ const Homepost = () => {
     .then((data)=>{
       sethomepost(data);
       console.log('to fetch data on refresh : /showpost',data);
-      console.log(data)
-    })
+    });
   },[])
   
   const [homepost , sethomepost] = useState([]);

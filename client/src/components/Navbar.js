@@ -133,6 +133,7 @@ export default function PrimarySearchAppBar({setisSignin}) {
         history.push('/');
         toast.success('Successfully logged Out')
         dispatch({ type: 'CLEAR'});
+        localStorage.clear();
       });
   }
 
@@ -207,6 +208,7 @@ export default function PrimarySearchAppBar({setisSignin}) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <Link to='/message' style = {{ cursor: 'pointer', textDecoration: 'none' }}>
       <MenuItem>
         <IconButton aria-label='show 4 new mails' color='inherit'>
           <Badge badgeContent={4} color='secondary'>
@@ -215,14 +217,15 @@ export default function PrimarySearchAppBar({setisSignin}) {
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
+      </Link>
+      {/* <MenuItem>
         <IconButton aria-label='show 11 new notifications' color='inherit'>
           <Badge badgeContent={11} color='secondary'>
             <NotificationsIcon />
           </Badge>
         </IconButton>
         <p>Notifications</p>
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           aria-label='account of current user'
@@ -322,16 +325,18 @@ export default function PrimarySearchAppBar({setisSignin}) {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <Link to='/message' style = {{ cursor: 'pointer', textDecoration: 'none' }}>
             <IconButton aria-label='show 4 new mails' color='inherit'>
               <Badge badgeContent={4} color='secondary'>
                 <MailIcon />
               </Badge>
             </IconButton>
-            <IconButton aria-label='show 17 new notifications' color='inherit'>
+            </Link>
+            {/* <IconButton aria-label='show 17 new notifications' color='inherit'>
               <Badge badgeContent={17} color='secondary'>
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <IconButton
               edge='end'
               aria-label='account of current user'

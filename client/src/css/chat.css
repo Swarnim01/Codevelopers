@@ -1,0 +1,14 @@
+.left{
+    align-self: flex-start;
+    background-color: #f1f0f0;
+    padding: 0.5rem;
+    border-radius: 0.7rem;
+    margin: 0.2rem;
+}
+.right{
+    align-self: flex-end;
+    background-color: #e9e9e9;
+    padding: 0.5rem;
+    border-radius: 0.7rem;
+    margin: 0.2rem;
+}

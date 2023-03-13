@@ -5,7 +5,7 @@ const Users = require('../models/user');
 
 module.exports = (req, res, next)=>{
     const { token } = req.cookies;
-    console.log(req);
+    // console.log(req);
     if(!token)
     return res.status(401).json({error:"Already logged in 1"});
 

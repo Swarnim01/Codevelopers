@@ -6,26 +6,35 @@ import { BrowserRouter , Route, Switch, useHistory } from 'react-router-dom';
 import Createpost from './components/createpost';
 import LoginSignUp from './components/Signinup';
 import Homepost from './components/home'
+import Message from './components/message';
 import { reducer , initialState} from './reducers/userReducer';
 import UserProfile from './components/UserProfile';
 import { Toaster } from 'react-hot-toast';
+import socket from './www/socket';
 export const UserContext = createContext();
-
-
 const Routing = ({setisSignin}) => {
     const history = useHistory();
         const { state, dispatch } = useContext(UserContext);
-    useEffect(() => {
-      fetch('/protected', {
+        useEffect(() => {
+          fetch('/protected', {
         method: 'get',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
       })
-        .then((response) => response.json())
+      .then((response) => response.json())
         .then((data) => {
           if (data) {
             dispatch({ type: 'USER', payload: data.userdata });
             setisSignin(true);
+            const sessionID = localStorage.getItem("sessionID");
+            if(sessionID){
+            socket.auth = { sessionID };
+            socket.connect();
+            }
+            else{
+            socket.auth = {username : data.userdata.username};
+            console.log('triggered');
+            socket.connect();}
           } else history.push('/');
         });
     }, []);
@@ -42,6 +51,7 @@ const Routing = ({setisSignin}) => {
       <Route path='/profile' exact component={Profile} />
       <Route path='/profile/:userId' exact component={UserProfile} />
       <Route path='/createpost' exact component={Createpost} />
+      <Route path='/message' exact component={Message} />
     </Switch>
   );
 }

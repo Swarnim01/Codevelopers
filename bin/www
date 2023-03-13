@@ -3,11 +3,12 @@
 /**
  * Module dependencies.
  */
-
+var { saveSession, findSession, findAllSessions } = require("../sessionStorage");
 var app = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
-
+const { randomUUID } = require('crypto');
+var { Server } = require('socket.io');
 /**
  * Get port from environment and store in Express.
  */
@@ -18,9 +19,101 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
+const io = new Server(server, {
+  cors : {
+    origin : 'http://localhost:3000',
+    methods : ['GET','POST'],
+  }
+})
 
+io.use((socket, next) => {
+  const sessionID = socket.handshake.auth.sessionID;
+  if(sessionID){
+    const session = findSession(sessionID);
+    console.log(session, "session");
+    if (session) {
+      socket.sessionID = sessionID;
+      socket.userID = session.userID;
+      socket.username = session.username;
+      return next();
+    }else
+    return next(new Error("invalid session"));
+  }
+  const username = socket.handshake.auth.username;
+  console.log(socket.handshake.auth, "handshake");
+  console.log(username);
+  if (!username) {
+    console.log(socket.handshake.auth, "handshake");
+    console.log('ERROR TRIGGERED');
+    return next(new Error("invalid username"));
+  }
+  socket.username = username;
+  socket.sessionID = randomUUID();
+  socket.userID = socket.id; 
+  console.log(socket.sessionID, socket.userID, socket.username);
+  next();
+});
+io.on("connection", async (socket) => {
+  saveSession(socket.sessionID, {
+    userID: socket.userID,
+    username: socket.username,
+    connected: true,
+  })
+  socket.join(socket.userID);
+  console.log("Savedd");
+  const users = [];
+  findAllSessions().forEach((session) => {
+    if(session.userID !== socket.userID)
+    users.push({
+      userID: session.userID,
+      username: session.username,
+      connected: session.connected,
+    });
+  });
+  // for (let [id, socket] of io.of("/").sockets) {
+  //   users.push({
+  //     userID: id,
+  //     username: socket.username,
+  //   });
+  // }
+  //all user event
+  socket.emit("users", users);
+
+  // connected user details event
+  socket.emit("session", { userID : socket.userID, sessionID: socket.sessionID , username : socket.username});
+  socket.on("disconnect", async () => {
+    const matchingSockets = await io.in(socket.userID).fetchSockets();
+    console.log(matchingSockets,"matchingsockets");
+    const isDisconnected = matchingSockets.length === 0;
+    console.log(isDisconnected, "isDisconnected");
+    if(isDisconnected)
+    {
+      socket.broadcast.emit("user disconnected", {
+        userID: socket.userID,
+        username: socket.username,
+      });
+      saveSession(socket.sessionID, {
+        userID: socket.userID,
+        username: socket.username,
+        connected: false,
+      })
+    }
+  })
+  // notify existing users
+  socket.broadcast.emit("user connected", {
+    userID: socket.userID,
+    username: socket.username,
+});
+socket.on("private message" , ({content , to }) => {
+  const newMessage = {
+    from : socket.userID,
+    to,
+    content,
+  }
+  socket.to(to).emit('private message' , newMessage)
+})
+});
 /**
  * Listen on provided port, on all network interfaces.
  */
