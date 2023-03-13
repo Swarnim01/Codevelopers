@@ -8,7 +8,7 @@ const SocialAuth = async (provider) => {
     var credential = result.credential;
     var token = credential.accessToken;
     var user = result.user;
-    return user;
+    return result;
   } catch (error) {
     var errorMessage = error.message;
     return errorMessage;
