@@ -150,7 +150,7 @@ const Signinup = ({props}) =>{
                 className='btn solid'
                 onClick={(event) => OnSubmitSignin(event)}
               />
-              <p className='social-text' style={{ marginTop: '0.3rem' }}>
+              {/* <p className='social-text' style={{ marginTop: '0.3rem' }}>
                 Or Sign in with social platforms
               </p>
               <div className='social-media'>
@@ -178,7 +178,7 @@ const Signinup = ({props}) =>{
                     onClick={() => AuthHandler(GithubProvider)}
                   />
                 </p>
-              </div>
+              </div> */}
             </form>
 
             <form className='sign-up-form'>
@@ -254,7 +254,7 @@ const Signinup = ({props}) =>{
                 className='btn solid'
                 onClick={(event) => OnSubmitSignup(event)}
               />
-              <p className='social-text' style={{ marginTop: '0.3rem' }}>
+              {/* <p className='social-text' style={{ marginTop: '0.3rem' }}>
                 Or Sign Up with social platforms
               </p>
               <div className='social-media'>
@@ -282,7 +282,7 @@ const Signinup = ({props}) =>{
                     onClick={() => AuthHandler(GithubProvider)}
                   />
                 </p>
-              </div>
+              </div> */}
             </form>
           </div>
         </div>
