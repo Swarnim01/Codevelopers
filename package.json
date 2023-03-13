@@ -2,6 +2,10 @@
   "name": "server",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": ">=10.16.0",
+    "npm": ">=5.6.0"
+  },
   "scripts": {
     "start": "nodemon ./bin/www",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
