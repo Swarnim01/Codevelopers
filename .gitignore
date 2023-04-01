@@ -1,6 +1,6 @@
 # dependencies
 client/node_modules
 server/node_modules
-aws
+/aws
 server/config/dev.js
 server/config/local.js
