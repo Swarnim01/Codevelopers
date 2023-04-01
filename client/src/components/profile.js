@@ -3,13 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
 import swarnim  from '../image/swarnim.jpeg';
 import '../css/profile.css';
-import { UserContext } from '../App';
+import { baseURL, UserContext } from '../App';
 const Profile = () =>{
   const { state , dispatch} = useContext(UserContext);
   const [myprofile, setmyprofile] = useState(null);
   const [myposts, setmyposts] = useState(null);
   useEffect(()=>{
-    fetch('/myprofile', {
+    fetch(`${baseURL}/myprofile`, {
       method: 'get',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },

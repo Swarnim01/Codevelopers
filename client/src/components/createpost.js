@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import {storage} from '../firebase';
 import firebase from '../firebase';
 import { useHistory } from 'react-router-dom'
+import { baseURL } from '../App';
 
 const useStyles = makeStyles({
   root: {
@@ -26,7 +27,7 @@ const Createpost = () => {
   let history = useHistory();
   useEffect(()=>{
     if(imageuri)
-    {fetch('/createpost', {
+    {fetch(`${baseURL}/createpost`, {
       method: 'post',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },

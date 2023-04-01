@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 import {FacebookProvider , GoogleProvider , GithubProvider, TwitterProvider} from '../service/authmethod';
 import SocialAuth from '../service/auth'
 import '../css/Signinup.css';
-import {UserContext} from '../App';
+import {baseURL, UserContext} from '../App';
 import socket from '../www/socket';
 
 const Signinup = ({props}) =>{
@@ -26,7 +26,7 @@ const Signinup = ({props}) =>{
 
     const OnSubmitSignup = (event) => {
         event.preventDefault();
-      fetch('/signup', {
+      fetch(`${baseURL}/signup`, {
         method: 'post',
         credentials:'include',
         headers: { 'Content-Type': 'application/json' },
@@ -46,7 +46,7 @@ const Signinup = ({props}) =>{
     };
         const OnSubmitSignin = (event) => {
           event.preventDefault();
-          fetch('/signin', {
+          fetch(`${baseURL}/signin`, {
             method: 'post',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },

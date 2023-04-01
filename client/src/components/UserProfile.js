@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom';
 import swarnim from '../image/swarnim.jpeg';
 import '../css/profile.css';
-import { UserContext } from '../App';
+import { baseURL, UserContext } from '../App';
 const UserProfile = () => {
   const [userprofile, setuserprofile] = useState(null);
   const [userpost, setuserpost] = useState(null);
@@ -11,7 +11,7 @@ const UserProfile = () => {
   console.log('userpost',userpost);
   const {userId} = useParams();
   useEffect(() => {
-    fetch(`/profile/${userId}`, {
+    fetch(`${baseURL}/profile/${userId}`, {
       method: 'get',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -25,7 +25,7 @@ const UserProfile = () => {
   }, []);
 
   const FollowUser = (followId) =>{
-          fetch('/follow', {
+          fetch(`${baseURL}/follow`, {
           method: 'put',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -39,7 +39,7 @@ const UserProfile = () => {
           });
 }
   const UnFollowUser = (followId) =>{
-          fetch('/unfollow', {
+          fetch(`${baseURL}/unfollow`, {
           method: 'put',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },

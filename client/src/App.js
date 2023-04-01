@@ -12,11 +12,12 @@ import UserProfile from './components/UserProfile';
 import { Toaster } from 'react-hot-toast';
 import socket from './www/socket';
 export const UserContext = createContext();
+export const baseURL = process.env.NODE_ENV === 'DEVELOPMENT' ? 'http://localhost:5000' : '/backend';
 const Routing = ({setisSignin}) => {
     const history = useHistory();
         const { state, dispatch } = useContext(UserContext);
         useEffect(() => {
-          fetch('/protected', {
+          fetch(`${baseURL}/protected`, {
         method: 'get',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },

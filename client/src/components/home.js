@@ -7,7 +7,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faGrin } from '@fortawesome/free-regular-svg-icons';
-import { UserContext } from '../App';
+import { baseURL, UserContext } from '../App';
 import { Link } from 'react-router-dom';
 import socket from '../www/socket';
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +55,7 @@ const Homepost = () => {
   },[checkIfUserExists])
 
   useEffect(()=>{
-    fetch('/showpost', {
+    fetch(`${baseURL}/showpost`, {
       method: 'get',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -71,7 +71,7 @@ const Homepost = () => {
   console.log(homepost,'before fetching')
   const [ comment , setcomment] = useState('');
   const likepost = (id) =>{
-      fetch('/like', {
+      fetch(`${baseURL}/like`, {
         method: 'put',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -94,7 +94,7 @@ const Homepost = () => {
   }
 
     const unlikepost = (id) => {
-      fetch('/unlike', {
+      fetch(`${baseURL}/unlike`, {
         method: 'put',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -115,7 +115,7 @@ const Homepost = () => {
     };
 
       const Comment = (id , comment) => {
-        fetch('/comment', {
+        fetch(`${baseURL}/comment`, {
           method: 'put',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -138,7 +138,7 @@ const Homepost = () => {
       };
 
             const DeleteComment = (id, commentId) => {
-              fetch(`/delete/${commentId}`, {
+              fetch(`${baseURL}/delete/${commentId}`, {
                 method: 'delete',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },

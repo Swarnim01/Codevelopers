@@ -9,7 +9,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import {Link, useHistory} from 'react-router-dom';
-import { UserContext } from '../App';
+import { baseURL, UserContext } from '../App';
 import toast from 'react-hot-toast';
 import swarnim from '../image/swarnim.jpeg';
 const useStyles = makeStyles((theme) => ({
@@ -121,7 +121,7 @@ export default function PrimarySearchAppBar({setisSignin}) {
   };
   const handleLogout = (e) =>{
     e.preventDefault();
-    fetch('/logout', {
+    fetch(`${baseURL}/logout`, {
       method: 'get',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -146,7 +146,7 @@ export default function PrimarySearchAppBar({setisSignin}) {
   const fetchuser = (e) => {
     let query = e.target.value;
     setsearchterm(query);
-    fetch('/search-user', {
+    fetch(`${baseURL}/search-user`, {
       method: 'post',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
